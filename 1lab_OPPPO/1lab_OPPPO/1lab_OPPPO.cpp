@@ -179,6 +179,7 @@ void StringCrop(std::string Line, int ReadLinesCounter) //Crop Result string, ad
 		std::cout << "Wrong type, skip that element, line: " << ReadLinesCounter << std::endl;
 		return;	
 
+
 		
 	}
 	
