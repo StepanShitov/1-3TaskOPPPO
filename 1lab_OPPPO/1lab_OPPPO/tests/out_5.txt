@@ -1,0 +1,3 @@
+Type: "tree"; Age: 5; Name: "Ash";
+Type: "tree"; Age: 8; Name: "Ash2";
+Type: "tree"; Age: 9; Name: "Ash3";

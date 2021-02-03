@@ -1,0 +1,14 @@
+Type: "tree"; Age: 5; Name: "Ash";
+Type: 1; Age: 5; Name: "Ash";
+Type: ""; Age: 5; Name: "Ash";
+Type: "tree"; Age: "five"; Name: "Ash";
+Type: "tree"; Age:; Name: "Ash";
+Type: "tree"; Age: 5; Name:1;
+Type: "tree"; Age: 5; Name: "";
+Type: "bush"; Month: MONTH_APRIL; Name: "Cherry";
+Type: 2; Month: MONTH_APRIL; Name: "Cherry";
+Type: ""; Month: MONTH_APRIL; Name: "Cherry";
+Type: "bush"; Month: 4; Name: "Cherry";
+Type: "bush"; Month: ; Name: "Cherry";
+Type: "bush"; Month: MONTH_APRIL; Name: 3;
+Type: "bush"; Month: MONTH_APRIL; Name: "";

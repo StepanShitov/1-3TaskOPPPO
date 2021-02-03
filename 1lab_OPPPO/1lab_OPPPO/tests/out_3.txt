@@ -1,0 +1,3 @@
+Type: "tree"; Age: 5; Name: "Ash";
+Type: "bush"; Month: MONTH_APRIL; Name: "Cherry";
+Type: "bush"; Month: MONTH_SEPTEMBER; Name: "ivy";
