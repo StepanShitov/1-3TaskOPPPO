@@ -177,8 +177,9 @@ void StringCrop(std::string Line, int ReadLinesCounter) //Crop Result string, ad
 	if (ElementType == -1)	//Check if element type is correct (-1)
 	{
 		std::cout << "Wrong type, skip that element, line: " << ReadLinesCounter << std::endl;
-		return;
-	
+		return;	
+
+		
 	}
 	
 	CroppedData[0] = DeleteQuotes(CroppedData[0]);
