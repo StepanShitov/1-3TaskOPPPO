@@ -4,6 +4,9 @@
 #include <sstream>
 #include <memory>
 #include <exception>
+//#include "Forest.hpp"
+#include "Tree.hpp"
+#include "Bush.hpp"
 
 int OpenFile(std::ifstream &in, char *TestsDir);
 void ReadFile(std::ifstream &in);
@@ -14,82 +17,6 @@ int AddNewElement(std::string ElementData[], int ElementType);
 std::string DeleteQuotes(std::string Str);
 std::string OnlyAge(std::string Age);
 std::string OnlyMonth(std::string Month);
-
-class Forest
-{
-public:
-
-enum MonthOfTheYear {
-		MONTH_JANUARY, MONTH_FEBRUARY, MONTH_MARCH, MONTH_APRIL, MONTH_MAY, MONTH_JUNE, MONTH_JULY,
-		MONTH_AUGUST, MONTH_SEPTEMBER, MONTH_OCTOBER, MONTH_NOVEMBER, MONTH_DECEMBER
-	} Month;
-
-	virtual std::string getType() { return "No way"; }
-	virtual std::string getName(){ return "No way"; }
-	virtual long int getAge(){ return 1; }
-	virtual MonthOfTheYear getMonth(){ return MONTH_JANUARY; }
-};
-
-class Tree : public Forest
-{
-private:
-	std::string Type;
-	long int Age;
-	std::string Name;
-
-public:
-	Tree(std::string _Type, long int _Age, std::string _Name)
-	{
-		Type = _Type;
-		Age = _Age;
-		Name = _Name;
-	}
-	std::string getType() override { return Type;}
-	long int getAge(){ return Age;}
-	std::string getName(){ return Name;}
-
-};
-
-int AddToList(std::shared_ptr <Forest> NewF);
-int NodesCntr;
-
-class Bush : public Forest
-{
-
-public:
-
-	Bush()
-	{
-		Type = "";
-		Month = static_cast<MonthOfTheYear>(1);
-		Name = "";
-
-	}
-
-	Bush(std::string _Type, Bush::MonthOfTheYear _Month , std::string _Name)
-	{
-		Type = _Type;
-		Month = _Month;
-		Name = _Name;
-	}
-
-	~Bush()
-	{		
-	}
-	
-	void setType(std::string _Type){ Type = _Type; }
-	void setName(std::string _Name){ Name = _Name; }
-
-	std::string getType() override { return Type;}
-	std::string getName(){ return Name;}
-	Bush::MonthOfTheYear getMonth() { return Month; }
-
-	std::string getName1() { return Name; }
-
-private:
-	std::string Type;
-	std::string Name;
-};
 
 struct Node
 {
@@ -102,7 +29,6 @@ Node *FirstNode, *CurrNode;
 
 int main(int argc, char *argv[])
 {
-	NodesCntr = 0;
 	char TestsDir[] = "tests/";	
 	if(argc <= 2)
 	{
@@ -177,10 +103,7 @@ void StringCrop(std::string Line, int ReadLinesCounter) //Crop Result string, ad
 	if (ElementType == -1)	//Check if element type is correct (-1)
 	{
 		std::cout << "Wrong type, skip that element, line: " << ReadLinesCounter << std::endl;
-		return;	
-
-
-		
+		return;			
 	}
 	
 	CroppedData[0] = DeleteQuotes(CroppedData[0]);
@@ -285,15 +208,7 @@ int AddNewElement(std::string ElementData[], int ElementType)
 			return -1;
 		
 		Tree NewTree(ElementData[0], Age, ElementData[2]);
-		Forest &NTree = NewTree;
-		std::shared_ptr <Forest> NewF(&NTree);
-		if(AddToList(NewF) != 1) 
-		{
-			std::cout << "Node adding fail!" << std::endl;
-			return -1;
-		}
-
-		//std::cout << A->Element->getType() << " " << A->Element->getAge() << " " << A->Element->getName() << std::endl;*/
+		
 		return 1;
 		break;
 	}
@@ -316,15 +231,6 @@ int AddNewElement(std::string ElementData[], int ElementType)
 		else if(ElementData[1] == "MONTH_DECEMBER") NewBush.Month = Bush::MONTH_DECEMBER;
 		else return -1;
 		
-		Forest &NBush = NewBush;
-		Forest *p;
-		p = &NBush;
-		std::shared_ptr <Forest> NewF(&NBush);
-		if(AddToList(NewF) != 1) 
-		{
-			std::cout << "Node adding fail!" << std::endl;
-			return -1;
-		}
 		return 1;
 		break;
 	}
@@ -333,33 +239,5 @@ int AddNewElement(std::string ElementData[], int ElementType)
 		return -1;
 	}
 	return -1;
-}
-
-int AddToList(std::shared_ptr <Forest> NewF)
-{
-	Node *A = new Node;
-	if(NodesCntr == 0)
-	{
-		FirstNode = A;
-		A->prev = A;
-		A->next = A;
-	}
-	else
-	{
-		A->prev = CurrNode;
-		CurrNode->next = A;
-		A->next = FirstNode;
-	}
-	NodesCntr++;
-	if(NodesCntr > 1)
-		std::cout << CurrNode->prev->num << std::endl;
-	A->num = NodesCntr;
-	A->Element = std::move(NewF);
-	std::cout << A->Element->getType() << A->num << std::endl;
-	if(NodesCntr > 1) std::cout << A->prev->Element->getType() << A->prev->num << std::endl;
-	CurrNode = A;
-	
-
-	return 1;
 }
 
