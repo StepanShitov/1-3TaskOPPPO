@@ -1,11 +1,10 @@
 #ifndef BUSH_H
 #define BUSH_H
 
-#include "Forest.hpp"
+#include "Forest.h"
 
 class Bush : public Forest
 {
-
 public:
 	Bush()
 	{
@@ -29,8 +28,6 @@ public:
 	std::string getType() override { return Type;}
 	std::string getName(){ return Name;}
 	Bush::MonthOfTheYear getMonth() { return Month; }
-
-	std::string getName1() { return Name; }
 
 private:
 	std::string Type;

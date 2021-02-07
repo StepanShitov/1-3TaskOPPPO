@@ -1,15 +1,10 @@
 #ifndef TREE_H
 #define TREE_H
 
-#include "Forest.hpp"
+#include "Forest.h"
 
 class Tree : public Forest
 {
-private:
-	std::string Type;
-	long int Age;
-	std::string Name;
-
 public:
 	Tree(std::string _Type, long int _Age, std::string _Name)
 	{
@@ -21,6 +16,10 @@ public:
 	long int getAge(){ return Age;}
 	std::string getName(){ return Name;}
 
+private:
+	std::string Type;
+	long int Age;
+	std::string Name;
 };
 
 #endif
