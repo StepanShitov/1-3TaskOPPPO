@@ -19,13 +19,20 @@ int checkIfFileExists(std::ifstream& in, char *testsDir)
 
 void getDataFromFile(std::ifstream &in)
 {
-	int ReadLinesCounter = 0;
-	std::string ReadLine;
-	while (getline(in, ReadLine))
+	char delimiter = ';';
+	int readLinesCounter = 0;
+	std::string readLine;
+	std::vector<std::string> dataFromCropeedLine;
+	while (getline(in, readLine, delimiter))
 	{
-		ReadLinesCounter++;
-		StringCrop(ReadLine, ReadLinesCounter);
+		if(readLine.find('\n') != std::string::npos)
+		{
+			readLinesCounter++;
+			prepareData(dataFromCropeedLine);
+			std::vector<std::string>().swap(dataFromCropeedLine);  //clear vector
+		}
+		dataFromCropeedLine.push_back(readLine);
 	}
-	if (ReadLinesCounter == 0)
+	if (readLinesCounter == 0)
 		std::cout << "File is empty!" << std::endl;
 }
