@@ -1,61 +1,52 @@
 #include "PreparingData.h"
 #include "main.h"
 
-void StringCrop(std::string Line, int ReadLinesCounter) //Crop Result string, add to the List
+void prepareData(std::vector<std::string>& data)
 {
-	std::string CroppedLine, CroppedData[3];
-	int PairOfDataPosition, ElementType, AddElementResult;
-	for (int i = 0; i < 3; i++)
-	{
-		PairOfDataPosition = Line.find(";");
-		CroppedLine = Line.substr(0, PairOfDataPosition);
-		if(i < 2)
-			Line = Line.substr(PairOfDataPosition + 2, Line.size() - CroppedLine.size());
+    std::vector<std::string> classesFields = { "Type", "Age", "Month", "Name" }; //here we have all types of fields in classes
+    std::string type, ageOrMonth, name, delimiter = ": ", fieldData;
+    int ageOrMonthFlag /*0 - Age, 1 - Month*/, indexOfField;
 
-		switch (i)
-		{
-		case 0:
-			CroppedData[0] = CroppedLine;
-			break;
-		case 1: 
-			CroppedData[1] = CroppedLine;
-			break;
-		case 2:
-			CroppedData[2] = CroppedLine;
-			break;
-		}
-	}
-
-	ElementType = RecognizeElement(CroppedData);	//Get type of element: -1 - Not found, 0 - tree, 1 - bush
-	if (ElementType == -1)	//Check if element type is correct (-1)
-	{
-		std::cout << "Wrong type, skip that element, line: " << ReadLinesCounter << std::endl;
-		return;			
-	}
-	
-	CroppedData[0] = DeleteQuotes(CroppedData[0]);
-	CroppedData[2] = DeleteQuotes(CroppedData[2]);
-	if(CroppedData[0] == "fail!" || CroppedData[2] == "fail!")
-		AddElementResult = -1;
-	else
-		AddElementResult = AddNewElement(CroppedData, ElementType);
-	if (AddElementResult == -1)
-	{
-		std::cout << "Wrong month or age, skip that element, line: " << ReadLinesCounter << std::endl;
-		return;
-	}
+    for(int i = 0; i < data.size(); i++)
+    {
+        for(int j = 0; j < classesFields.size(); j++)
+        {
+            if(data[i].find(classesFields[j] + delimiter) != std::string::npos)
+            {
+                indexOfField = getFieldIndex(classesFields, data[i]);
+                fieldData = getField(classesFields[j] + delimiter, data[i]);
+                break;
+            }
+        }
+        std::cout << data[i] << " " << indexOfField << " " << fieldData << std::endl;
+    }
 }
 
-std::string DeleteQuotes(std::string Str)
+std::string getField(std::string lineToFind, std::string data)
+{   
+    int indexOfField;
+    data = data.substr(data.find(lineToFind) + lineToFind.size());
+    if(data.find("\"") != std::string::npos)
+        data = deleteQuotes(data);    
+    return data;
+}
+
+int getFieldIndex(std::vector<std::string>& fields, std::string data)
 {
-	std::size_t pos = Str.find("\"");
-	if(pos == std::string::npos)
-		return "fail!";
-	Str = Str.substr(pos + 1, Str.size());
-	Str = Str.substr(0, Str.size() - 1);
-	if(Str.size() == 0)
-		return "fail!";
-	return Str;
+    std::string delimiter = ": ";
+    for(int i = 0; i < fields.size(); i++)
+    {
+        if(data.find(fields[i] + delimiter) != std::string::npos) 
+            return i;
+    }
+    return -1;
+}
+
+std::string deleteQuotes(std::string data)
+{
+    data = data.substr(data.find("\"") + 1);
+    data = data.substr(0, data.find("\""));
+    return data;
 }
 
 std::string OnlyAge(std::string Age)
