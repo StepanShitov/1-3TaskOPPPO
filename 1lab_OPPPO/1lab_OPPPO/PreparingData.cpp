@@ -1,10 +1,10 @@
 #include "PreparingData.h"
 #include "main.h"
 
-void prepareData(std::vector<std::string>& data)
+void prepareData(std::vector<std::string>& data, int currentLine)
 {
     std::vector<std::string> classesFields = { "Type", "Age", "Month", "Name" }; //here we have all types of fields in classes
-    std::string type, ageOrMonth, name, delimiter = ": ", fieldData;
+    std::string type, ageOrMonth, name, delimiter = ": ", fieldData, validityResult;
     int ageOrMonthFlag /*0 - Age, 1 - Month*/, indexOfField;
 
     for(int i = 0; i < data.size(); i++)
@@ -15,10 +15,12 @@ void prepareData(std::vector<std::string>& data)
             {
                 indexOfField = getFieldIndex(classesFields, data[i]);
                 fieldData = getField(classesFields[j] + delimiter, data[i]);
+                validityResult = checkValidity(indexOfField, &fieldData);
+                if(validityResult != "OK")
+                    problemsWithInputLine(currentLine, validityResult);
                 break;
             }
         }
-        std::cout << data[i] << " " << indexOfField << " " << fieldData << std::endl;
     }
 }
 
@@ -47,6 +49,35 @@ std::string deleteQuotes(std::string data)
     data = data.substr(data.find("\"") + 1);
     data = data.substr(0, data.find("\""));
     return data;
+}
+
+std::string checkValidity(int fieldIndex, std::string* dataAddress) //fun. check validity of data, if it returns 0 - smth wrong, 1 - ok
+{
+    std::string data = *dataAddress;
+    if(data.size() == 0)
+    {
+        return "field is empty";
+    }
+
+    if(fieldIndex == 3)
+    {
+        if(std::isupper(data[0]) != 0)
+        {
+            if(data.find(" ") != std::string::npos)
+            {
+                data = "\"" + data + "\"";
+                *dataAddress = data;
+            }
+            return "OK";
+        }
+        return "check name format";
+    }
+    return "OK";
+}
+
+void problemsWithInputLine(int currentLine, std::string problem)
+{
+    std::cout << "There are problems in line # " << currentLine << " problem is: " << problem << std::endl;
 }
 
 std::string OnlyAge(std::string Age)

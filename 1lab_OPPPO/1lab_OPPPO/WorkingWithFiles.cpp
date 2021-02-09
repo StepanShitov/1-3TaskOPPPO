@@ -28,7 +28,7 @@ void getDataFromFile(std::ifstream &in)
 		if(readLine.find('\n') != std::string::npos)
 		{
 			readLinesCounter++;
-			prepareData(dataFromCropeedLine);
+			prepareData(dataFromCropeedLine, readLinesCounter);
 			std::vector<std::string>().swap(dataFromCropeedLine);  //clear vector
 		}
 		dataFromCropeedLine.push_back(readLine);
