@@ -3,7 +3,6 @@
 
 void prepareData(std::vector<std::string>& data, int currentLine)
 {
-    std::vector<std::string> classesFields = { "Type", "Age", "Month", "Name" }; //here we have all types of fields in classes
     std::string type, ageOrMonth, name, delimiter = ": ", fieldData, validityResult;
     int ageOrMonthFlag /*0 - Age, 1 - Month*/, indexOfField;
 
@@ -13,11 +12,14 @@ void prepareData(std::vector<std::string>& data, int currentLine)
         {
             if(data[i].find(classesFields[j] + delimiter) != std::string::npos)
             {
-                indexOfField = getFieldIndex(classesFields, data[i]);
+                indexOfField = getFieldIndex(data[i]);
                 fieldData = getField(classesFields[j] + delimiter, data[i]);
-                validityResult = checkValidity(indexOfField, &fieldData);
+                validityResult = checkValidity(indexOfField, &fieldData);                
                 if(validityResult != "OK")
+                {
+                    std::cout << fieldData << " " << indexOfField << " " << validityResult << std::endl;
                     problemsWithInputLine(currentLine, validityResult);
+                }
                 break;
             }
         }
@@ -28,17 +30,17 @@ std::string getField(std::string lineToFind, std::string data)
 {   
     int indexOfField;
     data = data.substr(data.find(lineToFind) + lineToFind.size());
-    if(data.find("\"") != std::string::npos)
-        data = deleteQuotes(data);    
+    /*if(data.find("\"") != std::string::npos)
+        data = deleteQuotes(data);    */
     return data;
 }
 
-int getFieldIndex(std::vector<std::string>& fields, std::string data)
+int getFieldIndex(std::string data)
 {
     std::string delimiter = ": ";
-    for(int i = 0; i < fields.size(); i++)
+    for(int i = 0; i < classesFields.size(); i++)
     {
-        if(data.find(fields[i] + delimiter) != std::string::npos) 
+        if(data.find(classesFields[i] + delimiter) != std::string::npos) 
             return i;
     }
     return -1;
@@ -46,32 +48,55 @@ int getFieldIndex(std::vector<std::string>& fields, std::string data)
 
 std::string deleteQuotes(std::string data)
 {
-    data = data.substr(data.find("\"") + 1);
-    data = data.substr(0, data.find("\""));
-    return data;
+    if(data.find("\"") != std::string::npos)
+    {
+        data = data.substr(data.find("\"") + 1);
+        if(data.find("\"") != std::string::npos)
+        {
+            data = data.substr(0, data.find("\""));
+            //std::cout << "----------"<< data << "-------------"<< std::endl;
+            return data;
+        }
+    }
+    return "check data fields!";
 }
 
 std::string checkValidity(int fieldIndex, std::string* dataAddress) //fun. check validity of data, if it returns 0 - smth wrong, 1 - ok
 {
-    std::string data = *dataAddress;
-    if(data.size() == 0)
-    {
-        return "field is empty";
-    }
+    std::string status;
+    status = checkQuotesToTypes(&fieldIndex, &(*dataAddress));
+    if(status != "OK")   return status;
+    status = checkIfLineIsEmpty(&fieldIndex, &(*dataAddress));
+    if(status != "OK")   return status;
+    return "OK";
+}
 
-    if(fieldIndex == 3)
+std::string checkQuotesToTypes(int* fieldIndex, std::string* data)
+{
+    if(*fieldIndex == 1 || *fieldIndex == 2) // then we shouldn't find quotes
+        if((*data).find("\"") != std::string::npos)
+            return "in field " + classesFields[*fieldIndex] + " not correct format of data";
+    if(*fieldIndex == 0 || *fieldIndex == 3)
     {
-        if(std::isupper(data[0]) != 0)
+        int quotesPosition = -1;
+        for(int i = 0; i < 2; i++)
         {
-            if(data.find(" ") != std::string::npos)
-            {
-                data = "\"" + data + "\"";
-                *dataAddress = data;
-            }
-            return "OK";
+            quotesPosition = (*data).find("\"", quotesPosition + 1);
+            if(quotesPosition == std::string::npos)
+                return "in field " + classesFields[*fieldIndex] + " not correct format of data";
         }
-        return "check name format";
     }
+    return "OK";
+}
+
+std::string checkIfLineIsEmpty(int* fieldIndex, std::string* data)
+{
+    if(*fieldIndex == 1 || *fieldIndex == 2)
+        if((*data).size() == 0)
+            return classesFields[*fieldIndex] + " field is empty";
+    if(*fieldIndex == 0 || *fieldIndex == 3)
+        if(deleteQuotes(*data).size() == 0)
+            return classesFields[*fieldIndex] + " field is empty";
     return "OK";
 }
 

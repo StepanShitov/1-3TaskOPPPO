@@ -1,8 +1,8 @@
-Type: "tree"; Age: 5; Name: "Ash";
+Type: "tree"; Age: "5"; Name: "Ash";
 Type: 1; Age: 5; Name: "Ash";
 Type: ""; Age: 5; Name: "Ash";
 Type: "tree"; Age: "five"; Name: "Ash";
-Type: "tree"; Age:; Name: "Ash";
+Type: "tree"; Age: ; Name: "Ash";
 Type: "tree"; Age: 5; Name: 1;
 Type: "tree"; Age: 5; Name: "";
 Type: "bush"; Month: MONTH_APRIL; Name: "Cherry";
