@@ -4,7 +4,7 @@
 #include "Tree.h"
 #include "Bush.h"
 
-int AddNewElement(std::string ElementData[], int ElementType)
+/*int AddNewElement(std::string ElementData[], int ElementType)
 {
 	int MonthCount;
 	switch (ElementType)
@@ -53,4 +53,4 @@ int AddNewElement(std::string ElementData[], int ElementType)
 		return -1;
 	}
 	return -1;
-}
+}*/

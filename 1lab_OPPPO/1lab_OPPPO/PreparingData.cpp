@@ -3,6 +3,9 @@
 
 void prepareData(std::vector<std::string>& data, int currentLine)
 {
+    /*for(int i = 0; i < data.size(); i++)
+        std::cout << data[i] << " ";
+    std::cout << std::endl;*/
     std::string type, ageOrMonth, name, delimiter = ": ", fieldData, validityResult;
     int ageOrMonthFlag /*0 - Age, 1 - Month*/, indexOfField;
 
@@ -14,10 +17,10 @@ void prepareData(std::vector<std::string>& data, int currentLine)
             {
                 indexOfField = getFieldIndex(data[i]);
                 fieldData = getField(classesFields[j] + delimiter, data[i]);
-                validityResult = checkValidity(indexOfField, &fieldData);                
+                validityResult = checkValidity(&indexOfField, &fieldData);                
                 if(validityResult != "OK")
                 {
-                    std::cout << fieldData << " " << indexOfField << " " << validityResult << std::endl;
+                    //std::cout << fieldData << " " << indexOfField << " " << validityResult << std::endl;
                     problemsWithInputLine(currentLine, validityResult);
                 }
                 break;
@@ -30,8 +33,6 @@ std::string getField(std::string lineToFind, std::string data)
 {   
     int indexOfField;
     data = data.substr(data.find(lineToFind) + lineToFind.size());
-    /*if(data.find("\"") != std::string::npos)
-        data = deleteQuotes(data);    */
     return data;
 }
 
@@ -61,13 +62,34 @@ std::string deleteQuotes(std::string data)
     return "check data fields!";
 }
 
-std::string checkValidity(int fieldIndex, std::string* dataAddress) //fun. check validity of data, if it returns 0 - smth wrong, 1 - ok
+std::string checkValidity(int *fieldIndex, std::string* dataAddress) //fun. check validity of data, if it returns 0 - smth wrong, 1 - ok
 {
     std::string status;
-    status = checkQuotesToTypes(&fieldIndex, &(*dataAddress));
+    status = checkQuotesToTypes(&(*fieldIndex), &(*dataAddress));
     if(status != "OK")   return status;
-    status = checkIfLineIsEmpty(&fieldIndex, &(*dataAddress));
+    status = checkIfLineIsEmpty(&(*fieldIndex), &(*dataAddress));
     if(status != "OK")   return status;
+    switch (*fieldIndex)
+    {
+        case 1:
+        {
+            status = checkAge(&(*dataAddress));
+            if(status != "OK")   return status;
+            break;
+        }
+        case 2:
+        {
+            status = checkMonth(&(*dataAddress));
+            if(status != "OK")   return status;
+            break;
+        }
+        case 3:
+        {
+            status = checkName(&(*dataAddress));
+            if(status != "OK")   return status;
+            break;
+        }
+    }
     return "OK";
 }
 
@@ -97,6 +119,29 @@ std::string checkIfLineIsEmpty(int* fieldIndex, std::string* data)
     if(*fieldIndex == 0 || *fieldIndex == 3)
         if(deleteQuotes(*data).size() == 0)
             return classesFields[*fieldIndex] + " field is empty";
+    return "OK";
+}
+
+std::string checkAge(std::string* data)
+{
+    if(toLong(&(*data)) == -1)
+        return "in field Age, cannot convert to number";
+    return "OK";
+}
+
+std::string checkMonth(std::string* data)
+{
+    if((*data).find("MONTH_") == std::string::npos)
+        return "in field Month, check month information";
+    return "OK";
+}
+
+std::string checkName(std::string* data)
+{
+    if(isupper((*data)[1]) == 0)
+        return "check Name field data";
+    if((*data).find(" ") != std::string::npos)
+        *data = "\"" + *data + "\"";
     return "OK";
 }
 
@@ -141,25 +186,22 @@ std::string GetSecondPart(std::string LineToCheck) //Get data witch stays after 
 	return Result;
 }
 
-int toLong(std::string AgeStr)
+long toLong(std::string* AgeStr)
 {
 	try
 	{
-		return std::stol(AgeStr);
+		return std::stol(*AgeStr);
 	}
 	catch(const std::invalid_argument & ia)
 	{
-		std::cout << "Mistake in age! ";
 		return -1;
 	}
 	catch (const std::out_of_range& oor)
 	{
-		std::cout << "Mistake in age! ";
 		return -1;
 	}
 	catch(const std::exception & e)
 	{
-		std::cout << "Mistake in age! ";
 		return -1;
 	}
 }

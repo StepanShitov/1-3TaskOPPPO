@@ -33,6 +33,12 @@ void getDataFromFile(std::ifstream &in)
 		}
 		dataFromCropeedLine.push_back(readLine);
 	}
+	if(dataFromCropeedLine.size() > 0)
+	{
+		readLinesCounter++;
+		prepareData(dataFromCropeedLine, readLinesCounter);
+		std::vector<std::string>().swap(dataFromCropeedLine);  //clear vector
+	}
 	if (readLinesCounter == 0)
 		std::cout << "File is empty!" << std::endl;
 }
