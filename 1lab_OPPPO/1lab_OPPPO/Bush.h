@@ -8,30 +8,24 @@ class Bush : public Forest
 public:
 	Bush()
 	{
-		Type = "";
-		Month = static_cast<MonthOfTheYear>(1);
-		Name = "";
+		Forest("bush", "");
+		month_ = MONTH_JANUARY;
 	}
-	Bush(std::string _Type, Bush::MonthOfTheYear _Month , std::string _Name)
-	{
-		Type = _Type;
-		Month = _Month;
-		Name = _Name;
-	}
+
 	~Bush()
 	{		
 	}
-	
-	void setType(std::string _Type){ Type = _Type; }
-	void setName(std::string _Name){ Name = _Name; }
 
-	std::string getType() override { return Type;}
-	std::string getName(){ return Name;}
-	Bush::MonthOfTheYear getMonth() { return Month; }
+	enum MonthOfTheYear {
+	MONTH_JANUARY, MONTH_FEBRUARY, MONTH_MARCH, MONTH_APRIL, MONTH_MAY, MONTH_JUNE, MONTH_JULY,
+	MONTH_AUGUST, MONTH_SEPTEMBER, MONTH_OCTOBER, MONTH_NOVEMBER, MONTH_DECEMBER
+	};
+
+	void setColor(Bush::MonthOfTheYear month) { month_ = month; }
+	BushColor::MonthOfTheYear getMonth() { return month_; }
 
 private:
-	std::string Type;
-	std::string Name;
+	Bush::MonthOfTheYear month_;
 };
 
 #endif

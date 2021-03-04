@@ -1,6 +1,6 @@
 #include "CycleList.h"
 #include "main.h"
-#include "PreparingData.h"
+//#include "PreparingData.h"
 #include "Tree.h"
 #include "Bush.h"
 

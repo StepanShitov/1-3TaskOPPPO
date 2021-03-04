@@ -6,20 +6,16 @@
 class Tree : public Forest
 {
 public:
-	Tree(std::string _Type, long int _Age, std::string _Name)
+	Tree()
 	{
-		Type = _Type;
-		Age = _Age;
-		Name = _Name;
+		Forest("tree", "");
+		age_ = 0;
 	}
-	std::string getType() override { return Type;}
-	long int getAge(){ return Age;}
-	std::string getName(){ return Name;}
+
+	long int getAge(){ return age_;}
 
 private:
-	std::string Type;
-	long int Age;
-	std::string Name;
+	long int age_;
 };
 
 #endif

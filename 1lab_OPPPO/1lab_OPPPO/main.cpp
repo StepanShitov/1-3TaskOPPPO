@@ -2,7 +2,7 @@
 #include "Tree.h"
 #include "Bush.h"
 #include "WorkingWithFiles.h"
-#include "PreparingData.h"
+//#include "PreparingData.h"
 
 struct Node
 {

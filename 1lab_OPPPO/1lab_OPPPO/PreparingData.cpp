@@ -1,6 +1,10 @@
 #include "PreparingData.h"
 #include "main.h"
 
+std::string currentObjectType;
+Tree *existingTreeObjPtr;
+Bush *existingBushObjPtr;
+
 void prepareData(std::vector<std::string>& data, int currentLine)
 {
     /*for(int i = 0; i < data.size(); i++)
@@ -22,6 +26,10 @@ void prepareData(std::vector<std::string>& data, int currentLine)
                 {
                     //std::cout << fieldData << " " << indexOfField << " " << validityResult << std::endl;
                     problemsWithInputLine(currentLine, validityResult);
+                }
+                else
+                {
+                    stringsToObjects(&indexOfField, &fieldData);
                 }
                 break;
             }
@@ -140,9 +148,100 @@ std::string checkName(std::string* data)
 {
     if(isupper((*data)[1]) == 0)
         return "check Name field data";
-    if((*data).find(" ") != std::string::npos)
-        *data = "\"" + *data + "\"";
     return "OK";
+}
+
+std::string stringsToObjects(int* indexOfField, std::string* fieldData)
+{
+    if(*indexOfField == 0)
+        if(*fieldData == "tree")
+            currentObjectType = "tree";
+        else if(*fieldData == "bush")
+            currentObjectType = "bush";
+    
+    if(currentObjectType == "tree")
+        treeObjectCreation(&indexOfField, &fieldData);
+    else if(currentObjectType == "bush")
+        bushObjectCreation(&indexOfField, &fieldData);
+
+    return "OK";
+}
+
+std::string treeObjectCreation(int* indexOfField, std::string* fieldData)
+{
+    switch(*indexOfField)
+    {
+        case 0:
+        {
+            Tree tree = new Tree();
+            existingTreeObjPtr = tree;
+            break;
+        }
+        case 1:
+        {
+            existingTreeObjPtr.Age = *fieldData;
+            break;
+        }
+        case 2:
+        {
+            return "check data fields";
+        }
+        case 3:
+        {
+            existingTreeObjPtr.Name = *fieldData;
+            break;
+        }
+        default:
+            return "check data fields";
+    }
+    return "OK";    
+}
+
+std::string bushObjectCreation(int* indexOfField, std::string* fieldData)
+{
+    switch(*indexOfField)
+    {
+        case 0:
+        {
+            Bush bush = new Bush();
+            existingBushObjPtr = bush;
+            break;
+        }
+        case 1:
+        {
+            existingBushObjPtr.Month = getMonthValue(&(*fieldData));
+            break;
+        }
+        case 2:
+        {
+            return "check data fields";
+        }
+        case 3:
+        {
+            existingTreeObjPtr.Name = *fieldData;
+            break;
+        }
+        default:
+            return "check data fields";
+    }
+    return "OK";
+}
+
+enum getMonthValue(std::string* fieldData)
+{
+    if(ElementData[1] == "MONTH_JANUARY") return(Bush::MONTH_JANUARY);
+    else if(ElementData[1] == "MONTH_FEBRUARY") return(Bush::MONTH_FEBRUARY);
+    else if(ElementData[1] == "MONTH_MARCH") return(Bush::MONTH_MARCH);
+    else if(ElementData[1] == "MONTH_APRIL") return(Bush::MONTH_APRIL);
+    else if(ElementData[1] == "MONTH_MAY") return(Bush::MONTH_MAY);
+    else if(ElementData[1] == "MONTH_JUNE") return(Bush::MONTH_JUNE);
+    else if(ElementData[1] == "MONTH_JULY") return(Bush::MONTH_JULY);
+    else if(ElementData[1] == "MONTH_AUGUST") return(Bush::MONTH_AUGUST);
+    else if(ElementData[1] == "MONTH_SEPTEMBER") return(Bush::MONTH_SEPTEMBER);
+    else if(ElementData[1] == "MONTH_OCTOBER") return(Bush::MONTH_OCTOBER);
+    else if(ElementData[1] == "MONTH_NOVEMBER") return(Bush::MONTH_NOVEMBER);
+    else if(ElementData[1] == "MONTH_DECEMBER") return(Bush::MONTH_DECEMBER);
+    else return -1;
 }
 
 void problemsWithInputLine(int currentLine, std::string problem)
@@ -186,11 +285,11 @@ std::string GetSecondPart(std::string LineToCheck) //Get data witch stays after 
 	return Result;
 }
 
-long toLong(std::string* AgeStr)
+long toLong(std::string* ageStr)
 {
 	try
 	{
-		return std::stol(*AgeStr);
+		return std::stol(*ageStr);
 	}
 	catch(const std::invalid_argument & ia)
 	{
@@ -204,4 +303,10 @@ long toLong(std::string* AgeStr)
 	{
 		return -1;
 	}
+}
+
+void toLowerCase(std::string* type)
+{
+    for(int i = 0; i < (*type).size(); i++)
+        (&(*type))[i] = std::tolower((*type)[i]);
 }
