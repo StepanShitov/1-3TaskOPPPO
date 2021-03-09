@@ -6,13 +6,13 @@
 class Tree : public Forest
 {
 public:
-	Tree()
+	Tree() : Forest()
 	{
-		Forest("tree", "");
 		age_ = 0;
 	}
 
 	long int getAge(){ return age_;}
+	void setAge(long int age) { age_ = age; };
 
 private:
 	long int age_;

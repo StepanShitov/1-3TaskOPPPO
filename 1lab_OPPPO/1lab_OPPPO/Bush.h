@@ -6,9 +6,8 @@
 class Bush : public Forest
 {
 public:
-	Bush()
+	Bush() :Forest()
 	{
-		Forest("bush", "");
 		month_ = MONTH_JANUARY;
 	}
 
@@ -21,8 +20,9 @@ public:
 	MONTH_AUGUST, MONTH_SEPTEMBER, MONTH_OCTOBER, MONTH_NOVEMBER, MONTH_DECEMBER
 	};
 
-	void setColor(Bush::MonthOfTheYear month) { month_ = month; }
-	BushColor::MonthOfTheYear getMonth() { return month_; }
+	void setMonth(Bush::MonthOfTheYear month) { month_ = month; }
+	Bush::MonthOfTheYear getMonth() { return month_; }	
+	Bush::MonthOfTheYear getMonthValue(std::string* fieldData);
 
 private:
 	Bush::MonthOfTheYear month_;

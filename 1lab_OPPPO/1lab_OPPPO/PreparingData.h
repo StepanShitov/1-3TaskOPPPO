@@ -22,7 +22,6 @@ std::string checkName(std::string* data);
 std::string stringsToObjects(int* indexOfField, std::string* fieldData);
 std::string treeObjectCreation(int* indexOfField, std::string* fieldData);
 std::string bushObjectCreation(int* indexOfField, std::string* fieldData);
-BushColor::MonthOfTheYear getMonthValue(std::string* fieldData);
 void problemsWithInputLine(int currentLine, std::string problem);
 std::string GetSecondPart(std::string LineToCheck);
 std::string deleteQuotes(std::string Str);

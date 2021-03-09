@@ -1,5 +1,7 @@
 #include "PreparingData.h"
 #include "main.h"
+#include "Bush.h"
+#include "Tree.h"
 
 std::string currentObjectType;
 Tree *existingTreeObjPtr;
@@ -160,9 +162,9 @@ std::string stringsToObjects(int* indexOfField, std::string* fieldData)
             currentObjectType = "bush";
     
     if(currentObjectType == "tree")
-        treeObjectCreation(&indexOfField, &fieldData);
+        treeObjectCreation(&(*indexOfField), &(*fieldData));
     else if(currentObjectType == "bush")
-        bushObjectCreation(&indexOfField, &fieldData);
+        bushObjectCreation(&(*indexOfField), &(*fieldData));
 
     return "OK";
 }
@@ -173,13 +175,15 @@ std::string treeObjectCreation(int* indexOfField, std::string* fieldData)
     {
         case 0:
         {
-            Tree tree = new Tree();
-            existingTreeObjPtr = tree;
+            Tree tree;
+            existingTreeObjPtr = &tree;
+            tree.setType("tree");
             break;
         }
         case 1:
         {
-            existingTreeObjPtr.Age = *fieldData;
+            long int Age = toLong(&(*fieldData));
+            existingTreeObjPtr->setAge(Age);
             break;
         }
         case 2:
@@ -188,7 +192,7 @@ std::string treeObjectCreation(int* indexOfField, std::string* fieldData)
         }
         case 3:
         {
-            existingTreeObjPtr.Name = *fieldData;
+            existingTreeObjPtr->setName(*fieldData);
             break;
         }
         default:
@@ -203,13 +207,14 @@ std::string bushObjectCreation(int* indexOfField, std::string* fieldData)
     {
         case 0:
         {
-            Bush bush = new Bush();
-            existingBushObjPtr = bush;
+            Bush bush;
+            existingBushObjPtr = &bush;
+            bush.setType("bush");
             break;
         }
         case 1:
         {
-            existingBushObjPtr.Month = getMonthValue(&(*fieldData));
+            existingBushObjPtr->setMonth(Bush::getMonthValue(&(*fieldData)));
             break;
         }
         case 2:
@@ -225,23 +230,6 @@ std::string bushObjectCreation(int* indexOfField, std::string* fieldData)
             return "check data fields";
     }
     return "OK";
-}
-
-enum getMonthValue(std::string* fieldData)
-{
-    if(ElementData[1] == "MONTH_JANUARY") return(Bush::MONTH_JANUARY);
-    else if(ElementData[1] == "MONTH_FEBRUARY") return(Bush::MONTH_FEBRUARY);
-    else if(ElementData[1] == "MONTH_MARCH") return(Bush::MONTH_MARCH);
-    else if(ElementData[1] == "MONTH_APRIL") return(Bush::MONTH_APRIL);
-    else if(ElementData[1] == "MONTH_MAY") return(Bush::MONTH_MAY);
-    else if(ElementData[1] == "MONTH_JUNE") return(Bush::MONTH_JUNE);
-    else if(ElementData[1] == "MONTH_JULY") return(Bush::MONTH_JULY);
-    else if(ElementData[1] == "MONTH_AUGUST") return(Bush::MONTH_AUGUST);
-    else if(ElementData[1] == "MONTH_SEPTEMBER") return(Bush::MONTH_SEPTEMBER);
-    else if(ElementData[1] == "MONTH_OCTOBER") return(Bush::MONTH_OCTOBER);
-    else if(ElementData[1] == "MONTH_NOVEMBER") return(Bush::MONTH_NOVEMBER);
-    else if(ElementData[1] == "MONTH_DECEMBER") return(Bush::MONTH_DECEMBER);
-    else return -1;
 }
 
 void problemsWithInputLine(int currentLine, std::string problem)
