@@ -8,12 +8,6 @@ int lineIsBad;
 static Tree *existingTreeObjPtr;
 Bush *existingBushObjPtr;
 
-struct checkedData
-{
-    int index;
-    std::string fieldData;
-};
-
 void prepareData(std::vector<std::string>& data, int currentLine)
 {    
     /*for(int i = 0; i < data.size(); i++)
@@ -51,10 +45,12 @@ void prepareData(std::vector<std::string>& data, int currentLine)
     }
     if(lineIsBad != currentLine)
     {
-        for(int i = 0; i < checkedDataOut.size(); i++)
+        /*for(int i = 0; i < checkedDataOut.size(); i++)
             std::cout << checkedDataOut[i].index << " " << checkedDataOut[i].fieldData << " ";
-        std::cout << std::endl;
+        std::cout << std::endl;*/
+        stringsToObjects(checkedDataOut);
     }
+    std::vector<checkedData>().swap(checkedDataOut);
     //if(lineIsBad != currentLine)
         //stringsToObjects(&indexOfField, &fieldData);
 }
@@ -173,114 +169,73 @@ std::string checkName(std::string* data)
     return "OK";
 }
 
-std::string stringsToObjects(int* indexOfField, std::string* fieldData)
+std::string stringsToObjects(std::vector<checkedData>& data)
 {
-    if(*indexOfField == 0)
+    std::string currentType;
+    Tree newTree;
+    Bush newBush;
+    for(int i = 0; i < data.size(); i++)
     {
-        if((*fieldData).find("\"tree\"") != std::string::npos)
-            currentObjectType = "tree";
-        else if((*fieldData).find("\"bush\"") != std::string::npos)
-            currentObjectType = "bush";
+        std::cout << data[i].index << " " << data[i].fieldData << " ";
+        switch (data[i].index)
+        {
+            case 0:
+            {
+                if(data[i].fieldData == "\"tree\"")
+                {
+                    newTree.setType("tree");
+                    currentType = "tree";
+                }
+                else if(data[i].fieldData == "\"bush\"")
+                {
+                    newBush.setType("bush");
+                    currentType = "bush";
+                }
+                break;
+            }
+            case 1:
+            {
+                newTree.setAge(toLong(&(data[i].fieldData)));
+                break;
+            }
+            case 2:
+            {
+                setMonthValue(newBush, data[i].fieldData);
+                break;
+            }
+            case 3:
+            {
+                if(currentType == "tree")
+                    newTree.setName(data[i].fieldData);
+                else if(currentType == "bush")
+                    newBush.setName(data[i].fieldData);
+                break;
+            }
+        }
     }
-    std::cout << *fieldData << " " << *indexOfField << " " << currentObjectType << std::endl;
-    
-    if(currentObjectType == "tree")
-        treeObjectCreation(&(*indexOfField), &(*fieldData));
-    else if(currentObjectType == "bush")
-        bushObjectCreation(&(*indexOfField), &(*fieldData));
-
+    std::cout << currentType << std::endl;
+    if(currentType == "tree")
+        std::cout << newTree.getType() << " " << newTree.getAge() << " " << newTree.getName() << std::endl;
+    else if(currentType == "bush")
+        std::cout << newBush.getType() << " " << newBush.getMonth() << " " << newBush.getName() << std::endl;
     return "OK";
 }
 
-std::string treeObjectCreation(int* indexOfField, std::string* fieldData)
+void setMonthValue(Bush& obj, std::string &fieldData)
 {
-    std::cout << "2" << std::endl;
-    switch(*indexOfField)
-    {
-        case 0:
-        {
-            std::cout << "3" << std::endl;
-            Tree tree;
-            existingTreeObjPtr = &tree;
-            tree.setType("tree");
-            break;
-        }
-        case 1:
-        {
-            std::cout << "3" << std::endl;
-            long int Age = toLong(&(*fieldData));
-            existingTreeObjPtr->setAge(Age);
-            break;
-        }
-        case 2:
-        {
-            std::cout << "3" << std::endl;
-            return "check data fields";
-        }
-        case 3:
-        {
-            std::cout << existingTreeObjPtr->getType() << std::endl;
-            std::string name = deleteQuotes(*fieldData);
-            existingTreeObjPtr->setName(name);
-            std::cout << "3" << std::endl;
-            std::cout << existingTreeObjPtr->getType() << " " << existingTreeObjPtr->getAge() << " " << existingTreeObjPtr->getName() << std::endl;
-            break;
-        }
-        default:
-            return "check data fields";
-    }
-    return "OK";    
-}
-
-std::string bushObjectCreation(int* indexOfField, std::string* fieldData)
-{
-    switch(*indexOfField)
-    {
-        case 0:
-        {
-            Bush bush;
-            existingBushObjPtr = &bush;
-            bush.setType("bush");
-            break;
-        }
-        case 1:
-        {
-            setMonthValue(&(*fieldData));
-            //existingBushObjPtr->setMonth(getMonthValue(&(*fieldData)));
-            break;
-        }
-        case 2:
-        { 
-            return "check data fields";
-        }
-        case 3:
-        {
-            existingBushObjPtr->setName(*fieldData);
-            std::cout << "1" << std::endl;
-            std::cout << existingBushObjPtr->getType() << " " << existingBushObjPtr->getMonth() << " " << existingBushObjPtr->getName() << std::endl;
-            break;
-        }
-        default:
-            return "check data fields";
-    }
-    return "OK";
-}
-
-void setMonthValue(std::string* fieldData)
-{
-    if(*fieldData == "MONTH_JANUARY") existingBushObjPtr->setMonth(Bush::MONTH_JANUARY);
-    else if(*fieldData == "MONTH_FEBRUARY") existingBushObjPtr->setMonth(Bush::MONTH_FEBRUARY);
-    else if(*fieldData == "MONTH_MARCH") existingBushObjPtr->setMonth(Bush::MONTH_MARCH);
-    else if(*fieldData == "MONTH_APRIL") existingBushObjPtr->setMonth(Bush::MONTH_APRIL);
-    else if(*fieldData == "MONTH_MAY") existingBushObjPtr->setMonth(Bush::MONTH_MAY);
-    else if(*fieldData == "MONTH_JUNE") existingBushObjPtr->setMonth(Bush::MONTH_JUNE);
-    else if(*fieldData == "MONTH_JULY") existingBushObjPtr->setMonth(Bush::MONTH_JULY);
-    else if(*fieldData == "MONTH_AUGUST") existingBushObjPtr->setMonth(Bush::MONTH_AUGUST);
-    else if(*fieldData == "MONTH_SEPTEMBER") existingBushObjPtr->setMonth(Bush::MONTH_SEPTEMBER);
-    else if(*fieldData == "MONTH_OCTOBER") existingBushObjPtr->setMonth(Bush::MONTH_OCTOBER);
-    else if(*fieldData == "MONTH_NOVEMBER") existingBushObjPtr->setMonth(Bush::MONTH_NOVEMBER);
-    else if(*fieldData == "MONTH_DECEMBER") existingBushObjPtr->setMonth(Bush::MONTH_DECEMBER);
-    else existingBushObjPtr->setMonth(Bush::MONTH_INCORRECT);
+    if(fieldData == "MONTH_JANUARY") obj.setMonth(Bush::MONTH_JANUARY);
+    else if(fieldData == "MONTH_FEBRUARY") obj.setMonth(Bush::MONTH_FEBRUARY);
+    else if(fieldData == "MONTH_MARCH") obj.setMonth(Bush::MONTH_MARCH);
+    else if(fieldData == "MONTH_APRIL") obj.setMonth(Bush::MONTH_APRIL);
+    else if(fieldData == "MONTH_MAY") obj.setMonth(Bush::MONTH_MAY);
+    else if(fieldData == "MONTH_JUNE") obj.setMonth(Bush::MONTH_JUNE);
+    else if(fieldData == "MONTH_JULY") obj.setMonth(Bush::MONTH_JULY);
+    else if(fieldData == "MONTH_AUGUST") obj.setMonth(Bush::MONTH_AUGUST);
+    else if(fieldData == "MONTH_SEPTEMBER") obj.setMonth(Bush::MONTH_SEPTEMBER);
+    else if(fieldData == "MONTH_OCTOBER") obj.setMonth(Bush::MONTH_OCTOBER);
+    else if(fieldData == "MONTH_NOVEMBER") obj.setMonth(Bush::MONTH_NOVEMBER);
+    else if(fieldData == "MONTH_DECEMBER") obj.setMonth(Bush::MONTH_DECEMBER);
+    else obj.setMonth(Bush::MONTH_INCORRECT);
 }
 
 void problemsWithInputLine(int currentLine, std::string problem)

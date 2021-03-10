@@ -15,6 +15,7 @@ public:
 		type_ = " ";
 		name_ = " ";
 	}
+	~Forest() { }
 
 	virtual std::string getType() { return type_; }
 	virtual std::string getName(){ return name_; }

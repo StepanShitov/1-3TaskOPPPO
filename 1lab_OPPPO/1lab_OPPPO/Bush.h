@@ -6,14 +6,12 @@
 class Bush : public Forest
 {
 public:
-	Bush() :Forest()
+	Bush() //:Forest()
 	{
 		month_ = MONTH_JANUARY;
 	}
 
-	~Bush()
-	{		
-	}
+	~Bush()	{ }
 
 	enum MonthOfTheYear {
 	MONTH_JANUARY, MONTH_FEBRUARY, MONTH_MARCH, MONTH_APRIL, MONTH_MAY, MONTH_JUNE, MONTH_JULY,

@@ -10,6 +10,8 @@ public:
 	{
 		age_ = 0;
 	}
+	
+	~Tree() { }
 
 	long int getAge(){ return age_;}
 	void setAge(long int age) { age_ = age; };
