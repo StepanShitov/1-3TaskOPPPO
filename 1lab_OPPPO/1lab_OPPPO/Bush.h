@@ -19,7 +19,7 @@ public:
 	};
 
 	void setMonth(Bush::MonthOfTheYear month) { month_ = month; }
-	Bush::MonthOfTheYear getMonth() { return month_; }	
+	virtual int getMonth() { return month_; }	
 
 private:
 	Bush::MonthOfTheYear month_;

@@ -3,18 +3,14 @@
 #include "Bush.h"
 #include "Tree.h"
 
-std::string currentObjectType;
-int lineIsBad;
-static Tree *existingTreeObjPtr;
-Bush *existingBushObjPtr;
 
-void prepareData(std::vector<std::string>& data, int currentLine)
+void prepareData(std::vector<std::string>& data, int currentLine, List& list)
 {    
     /*for(int i = 0; i < data.size(); i++)
         std::cout << data[i] << " ";
     std::cout << std::endl;*/
     std::string type, ageOrMonth, name, delimiter = ": ", fieldData, validityResult;
-    int ageOrMonthFlag /*0 - Age, 1 - Month*/, indexOfField;
+    int ageOrMonthFlag /*0 - Age, 1 - Month*/, indexOfField, lineIsBad;
     std::vector<checkedData> checkedDataOut;
 
     for(int i = 0; i < data.size(); i++)
@@ -48,7 +44,7 @@ void prepareData(std::vector<std::string>& data, int currentLine)
         /*for(int i = 0; i < checkedDataOut.size(); i++)
             std::cout << checkedDataOut[i].index << " " << checkedDataOut[i].fieldData << " ";
         std::cout << std::endl;*/
-        stringsToObjects(checkedDataOut);
+        stringsToObjects(checkedDataOut, list);
     }
     std::vector<checkedData>().swap(checkedDataOut);
     //if(lineIsBad != currentLine)
@@ -169,14 +165,13 @@ std::string checkName(std::string* data)
     return "OK";
 }
 
-std::string stringsToObjects(std::vector<checkedData>& data)
+std::string stringsToObjects(std::vector<checkedData>& data, List &list)
 {
     std::string currentType;
     Tree newTree;
     Bush newBush;
     for(int i = 0; i < data.size(); i++)
     {
-        std::cout << data[i].index << " " << data[i].fieldData << " ";
         switch (data[i].index)
         {
             case 0:
@@ -205,6 +200,8 @@ std::string stringsToObjects(std::vector<checkedData>& data)
             }
             case 3:
             {
+                if(data[i].fieldData.find(" ") == std::string::npos)
+                    data[i].fieldData = deleteQuotes(data[i].fieldData);
                 if(currentType == "tree")
                     newTree.setName(data[i].fieldData);
                 else if(currentType == "bush")
@@ -213,12 +210,40 @@ std::string stringsToObjects(std::vector<checkedData>& data)
             }
         }
     }
-    std::cout << currentType << std::endl;
+    
+    Forest* f;
     if(currentType == "tree")
-        std::cout << newTree.getType() << " " << newTree.getAge() << " " << newTree.getName() << std::endl;
+    {
+        f = &newTree;
+    }
     else if(currentType == "bush")
-        std::cout << newBush.getType() << " " << newBush.getMonth() << " " << newBush.getName() << std::endl;
+    {
+        f = &newBush;
+    }
+    list.addNewElement(*f);
+
     return "OK";
+}
+
+std::string getMonthValue(int* month)
+{
+    switch (*month)
+    {
+        case 0: return "MONTH_JANUARY";
+        case 1: return "MONTH_FEBRUARY";
+        case 2: return "MONTH_MARCH";
+        case 3: return "MONTH_APRIL";
+        case 4: return "MONTH_MAY";
+        case 5: return "MONTH_JUNE";
+        case 6: return "MONTH_JULY";
+        case 7: return "MONTH_AUGUST";
+        case 8: return "MONTH_SEPTEMBER";
+        case 9: return "MONTH_OCTOBER";
+        case 10: return "MONTH_NOVEMBER";
+        case 11: return "MONTH_DECEMBER";
+        case 12: return "MONTH_INCORRECT";
+        default: return "MONTH_INCORRECT"; 
+    }
 }
 
 void setMonthValue(Bush& obj, std::string &fieldData)

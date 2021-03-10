@@ -4,14 +4,6 @@
 #include "WorkingWithFiles.h"
 //#include "PreparingData.h"
 
-struct Node
-{
-	std::shared_ptr<Forest> Element;
-	int num;
-	Node *next;
-	Node *prev;
-};
-Node *FirstNode, *CurrNode;
 
 int main(int argc, char *argv[])
 {

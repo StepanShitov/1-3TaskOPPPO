@@ -1,24 +1,22 @@
 #ifndef FOREST_H
 #define FOREST_H
 
+//#include "Bush.h"
+
 class Forest
 {
 public:
-	/*Forest(std::string type = " ", std::string name = " ")
-	{
-		type_ = type;
-		name_ = name;
-	}*/
-
 	Forest()
 	{
 		type_ = " ";
 		name_ = " ";
 	}
-	~Forest() { }
+	~Forest() { std::cout << "destruct";}
 
-	virtual std::string getType() { return type_; }
-	virtual std::string getName(){ return name_; }
+	std::string getType() { return type_; }
+	std::string getName(){ return name_; }
+	virtual long int getAge(){ return 0;}
+	virtual int getMonth() { return 0; }
 
 	
 	void setType(std::string type){ type_ = type; }

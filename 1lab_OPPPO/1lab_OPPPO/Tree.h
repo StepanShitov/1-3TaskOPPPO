@@ -6,14 +6,14 @@
 class Tree : public Forest
 {
 public:
-	Tree()// : Forest()
+	Tree() //: Forest()
 	{
 		age_ = 0;
 	}
 	
 	~Tree() { }
 
-	long int getAge(){ return age_;}
+	virtual long int getAge(){ return age_;}
 	void setAge(long int age) { age_ = age; };
 
 private:

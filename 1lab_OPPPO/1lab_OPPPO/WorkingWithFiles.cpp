@@ -19,6 +19,7 @@ int checkIfFileExists(std::ifstream& in, char *testsDir)
 
 void getDataFromFile(std::ifstream &in)
 {
+	List list;
 	char delimiter = ';';
 	int readLinesCounter = 0;
 	std::string readLine;
@@ -28,17 +29,73 @@ void getDataFromFile(std::ifstream &in)
 		if(readLine.find('\n') != std::string::npos)
 		{
 			readLinesCounter++;
-			prepareData(dataFromCropeedLine, readLinesCounter);
+			prepareData(dataFromCropeedLine, readLinesCounter, list);
 			std::vector<std::string>().swap(dataFromCropeedLine);  //clear vector
 		}
 		dataFromCropeedLine.push_back(readLine);
-	}
+	}	
+	list.printList();
+	menu(list);
+
 	if(dataFromCropeedLine.size() > 0)
 	{
 		readLinesCounter++;
-		prepareData(dataFromCropeedLine, readLinesCounter);
+		prepareData(dataFromCropeedLine, readLinesCounter, list);
 		std::vector<std::string>().swap(dataFromCropeedLine);  //clear vector
 	}
 	if (readLinesCounter == 0)
 		std::cout << "File is empty!" << std::endl;
+}
+
+void menu(List& list)
+{
+	std::string choiceStr;
+	long choiceNum;
+	while(1)
+	{
+		std::cout << "what's next? 1-Delete element of given name; 2 - Sort by name length; 3 - exit" << std::endl;
+		std::cin >> choiceStr;
+		choiceNum = toLong(&choiceStr);
+		if(choiceNum != -1) 
+		{
+			switch (choiceNum)
+			{
+				case 1:
+				{
+					std::cout << "Enter list name ";
+					std::string name;
+					std::getline(std::cin >> std::ws, name);
+					Node *node = list.find(name);
+					if(node == NULL)
+					{
+						std::cout << "Check entered data!" << std::endl;
+					}
+					else
+					{
+						list.deleteNode(node);
+						list.printList();
+						if(list.howmany_links() == 0)
+						{
+							std::cout << "List is empty, exit.";
+							return;
+						}
+					}
+					break;
+				}
+				case 2:
+				{
+					list.sortlist();
+					list.printList();
+					break;
+				}
+				case 3:
+					return;
+				default:
+				{
+					std::cout << "Check entered choice!" << std::endl;
+					break;
+				}
+			}
+		}
+	}
 }
