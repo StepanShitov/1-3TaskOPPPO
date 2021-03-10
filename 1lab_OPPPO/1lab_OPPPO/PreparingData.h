@@ -23,6 +23,7 @@ std::string stringsToObjects(int* indexOfField, std::string* fieldData);
 std::string treeObjectCreation(int* indexOfField, std::string* fieldData);
 std::string bushObjectCreation(int* indexOfField, std::string* fieldData);
 void problemsWithInputLine(int currentLine, std::string problem);
+void setMonthValue(std::string* fieldData);
 std::string GetSecondPart(std::string LineToCheck);
 std::string deleteQuotes(std::string Str);
 std::string OnlyAge(std::string Age);

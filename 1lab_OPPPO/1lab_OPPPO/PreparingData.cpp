@@ -4,16 +4,24 @@
 #include "Tree.h"
 
 std::string currentObjectType;
-Tree *existingTreeObjPtr;
+int lineIsBad;
+static Tree *existingTreeObjPtr;
 Bush *existingBushObjPtr;
 
-void prepareData(std::vector<std::string>& data, int currentLine)
+struct checkedData
 {
+    int index;
+    std::string fieldData;
+};
+
+void prepareData(std::vector<std::string>& data, int currentLine)
+{    
     /*for(int i = 0; i < data.size(); i++)
         std::cout << data[i] << " ";
     std::cout << std::endl;*/
     std::string type, ageOrMonth, name, delimiter = ": ", fieldData, validityResult;
     int ageOrMonthFlag /*0 - Age, 1 - Month*/, indexOfField;
+    std::vector<checkedData> checkedDataOut;
 
     for(int i = 0; i < data.size(); i++)
     {
@@ -27,16 +35,28 @@ void prepareData(std::vector<std::string>& data, int currentLine)
                 if(validityResult != "OK")
                 {
                     //std::cout << fieldData << " " << indexOfField << " " << validityResult << std::endl;
+                    lineIsBad = currentLine;
                     problemsWithInputLine(currentLine, validityResult);
                 }
                 else
                 {
-                    stringsToObjects(&indexOfField, &fieldData);
+                        checkedData newDataPair;
+                        newDataPair.index = indexOfField;
+                        newDataPair.fieldData = fieldData;
+                        checkedDataOut.push_back(newDataPair);
                 }
                 break;
             }
         }
     }
+    if(lineIsBad != currentLine)
+    {
+        for(int i = 0; i < checkedDataOut.size(); i++)
+            std::cout << checkedDataOut[i].index << " " << checkedDataOut[i].fieldData << " ";
+        std::cout << std::endl;
+    }
+    //if(lineIsBad != currentLine)
+        //stringsToObjects(&indexOfField, &fieldData);
 }
 
 std::string getField(std::string lineToFind, std::string data)
@@ -156,10 +176,13 @@ std::string checkName(std::string* data)
 std::string stringsToObjects(int* indexOfField, std::string* fieldData)
 {
     if(*indexOfField == 0)
-        if(*fieldData == "tree")
+    {
+        if((*fieldData).find("\"tree\"") != std::string::npos)
             currentObjectType = "tree";
-        else if(*fieldData == "bush")
+        else if((*fieldData).find("\"bush\"") != std::string::npos)
             currentObjectType = "bush";
+    }
+    std::cout << *fieldData << " " << *indexOfField << " " << currentObjectType << std::endl;
     
     if(currentObjectType == "tree")
         treeObjectCreation(&(*indexOfField), &(*fieldData));
@@ -171,10 +194,12 @@ std::string stringsToObjects(int* indexOfField, std::string* fieldData)
 
 std::string treeObjectCreation(int* indexOfField, std::string* fieldData)
 {
+    std::cout << "2" << std::endl;
     switch(*indexOfField)
     {
         case 0:
         {
+            std::cout << "3" << std::endl;
             Tree tree;
             existingTreeObjPtr = &tree;
             tree.setType("tree");
@@ -182,17 +207,23 @@ std::string treeObjectCreation(int* indexOfField, std::string* fieldData)
         }
         case 1:
         {
+            std::cout << "3" << std::endl;
             long int Age = toLong(&(*fieldData));
             existingTreeObjPtr->setAge(Age);
             break;
         }
         case 2:
         {
+            std::cout << "3" << std::endl;
             return "check data fields";
         }
         case 3:
         {
-            existingTreeObjPtr->setName(*fieldData);
+            std::cout << existingTreeObjPtr->getType() << std::endl;
+            std::string name = deleteQuotes(*fieldData);
+            existingTreeObjPtr->setName(name);
+            std::cout << "3" << std::endl;
+            std::cout << existingTreeObjPtr->getType() << " " << existingTreeObjPtr->getAge() << " " << existingTreeObjPtr->getName() << std::endl;
             break;
         }
         default:
@@ -214,22 +245,42 @@ std::string bushObjectCreation(int* indexOfField, std::string* fieldData)
         }
         case 1:
         {
-            existingBushObjPtr->setMonth(Bush::getMonthValue(&(*fieldData)));
+            setMonthValue(&(*fieldData));
+            //existingBushObjPtr->setMonth(getMonthValue(&(*fieldData)));
             break;
         }
         case 2:
-        {
+        { 
             return "check data fields";
         }
         case 3:
         {
-            existingTreeObjPtr.Name = *fieldData;
+            existingBushObjPtr->setName(*fieldData);
+            std::cout << "1" << std::endl;
+            std::cout << existingBushObjPtr->getType() << " " << existingBushObjPtr->getMonth() << " " << existingBushObjPtr->getName() << std::endl;
             break;
         }
         default:
             return "check data fields";
     }
     return "OK";
+}
+
+void setMonthValue(std::string* fieldData)
+{
+    if(*fieldData == "MONTH_JANUARY") existingBushObjPtr->setMonth(Bush::MONTH_JANUARY);
+    else if(*fieldData == "MONTH_FEBRUARY") existingBushObjPtr->setMonth(Bush::MONTH_FEBRUARY);
+    else if(*fieldData == "MONTH_MARCH") existingBushObjPtr->setMonth(Bush::MONTH_MARCH);
+    else if(*fieldData == "MONTH_APRIL") existingBushObjPtr->setMonth(Bush::MONTH_APRIL);
+    else if(*fieldData == "MONTH_MAY") existingBushObjPtr->setMonth(Bush::MONTH_MAY);
+    else if(*fieldData == "MONTH_JUNE") existingBushObjPtr->setMonth(Bush::MONTH_JUNE);
+    else if(*fieldData == "MONTH_JULY") existingBushObjPtr->setMonth(Bush::MONTH_JULY);
+    else if(*fieldData == "MONTH_AUGUST") existingBushObjPtr->setMonth(Bush::MONTH_AUGUST);
+    else if(*fieldData == "MONTH_SEPTEMBER") existingBushObjPtr->setMonth(Bush::MONTH_SEPTEMBER);
+    else if(*fieldData == "MONTH_OCTOBER") existingBushObjPtr->setMonth(Bush::MONTH_OCTOBER);
+    else if(*fieldData == "MONTH_NOVEMBER") existingBushObjPtr->setMonth(Bush::MONTH_NOVEMBER);
+    else if(*fieldData == "MONTH_DECEMBER") existingBushObjPtr->setMonth(Bush::MONTH_DECEMBER);
+    else existingBushObjPtr->setMonth(Bush::MONTH_INCORRECT);
 }
 
 void problemsWithInputLine(int currentLine, std::string problem)

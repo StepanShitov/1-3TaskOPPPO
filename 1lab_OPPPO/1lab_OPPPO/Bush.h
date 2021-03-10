@@ -17,12 +17,11 @@ public:
 
 	enum MonthOfTheYear {
 	MONTH_JANUARY, MONTH_FEBRUARY, MONTH_MARCH, MONTH_APRIL, MONTH_MAY, MONTH_JUNE, MONTH_JULY,
-	MONTH_AUGUST, MONTH_SEPTEMBER, MONTH_OCTOBER, MONTH_NOVEMBER, MONTH_DECEMBER
+	MONTH_AUGUST, MONTH_SEPTEMBER, MONTH_OCTOBER, MONTH_NOVEMBER, MONTH_DECEMBER, MONTH_INCORRECT
 	};
 
 	void setMonth(Bush::MonthOfTheYear month) { month_ = month; }
 	Bush::MonthOfTheYear getMonth() { return month_; }	
-	Bush::MonthOfTheYear getMonthValue(std::string* fieldData);
 
 private:
 	Bush::MonthOfTheYear month_;

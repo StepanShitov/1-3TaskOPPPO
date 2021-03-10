@@ -6,7 +6,7 @@
 class Tree : public Forest
 {
 public:
-	Tree() : Forest()
+	Tree()// : Forest()
 	{
 		age_ = 0;
 	}
