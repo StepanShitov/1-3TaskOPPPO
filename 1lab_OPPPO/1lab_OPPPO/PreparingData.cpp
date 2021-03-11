@@ -262,43 +262,10 @@ void setMonthValue(Bush& obj, std::string &fieldData)
 
 void problemsWithInputLine(int currentLine, std::string problem)
 {
+    std::ofstream logsFile("Logs.txt", std::ios_base::app);
     std::cout << "There are problems in line # " << currentLine << " problem is: " << problem << std::endl;
-}
-
-std::string OnlyAge(std::string Age)
-{
-	if(Age.size() > 4)
-		Age = Age.substr(Age.find(":") + 2, Age.size());
-	else return "Fail";
-	return Age;
-}
-
-std::string OnlyMonth(std::string Month)
-{
-	int Pos = Month.find(": ");
-	Month = Month.substr(Pos + 2, Month.size() - 1);
-	return Month;
-}
-
-int RecognizeElement(std::string DataToRecognize[]) //Find out what type element is
-{	//0 - Tree, 1 - Bush
-	std::string ElementType;
-
-	ElementType = GetSecondPart(DataToRecognize[0]);
-	if (ElementType == "tree")
-		return 0;
-	else if (ElementType == "bush")
-		return 1;
-	return -1;
-}
-
-std::string GetSecondPart(std::string LineToCheck) //Get data witch stays after :
-{
-	std::string Result;
-	Result = LineToCheck.substr(LineToCheck.find(" ") + 2, LineToCheck.find(" ") - 1);
-	for (unsigned int i = 0; i < Result.size(); i++)
-		Result[i] = std::tolower(Result[i]);
-	return Result;
+    logsFile << "Line # " << currentLine << " problem is: " << problem << "\n";
+    logsFile.close();
 }
 
 long toLong(std::string* ageStr)

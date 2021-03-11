@@ -8,6 +8,7 @@
 #include <ctype.h>
 #include "Bush.h"
 #include "CycleList.h"
+#include <fstream>
 
 const std::vector<std::string> classesFields = { "Type", "Age", "Month", "Name" }; //here we have all types of fields in classes
 

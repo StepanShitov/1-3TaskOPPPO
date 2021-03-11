@@ -1,0 +1,58 @@
+Line # 14 problem is: Name field is empty
+Line # 1 problem is: in field Age not correct format of data
+Line # 1 problem is: check Name field data
+Line # 1 problem is: check Name field data
+Line # 2 problem is: in field Type not correct format of data
+Line # 4 problem is: in field Age not correct format of data
+Line # 5 problem is: Age field is empty
+Line # 6 problem is: in field Age, cannot convert to number
+Line # 6 problem is: in field Name not correct format of data
+Line # 6 problem is: in field Name not correct format of data
+Line # 7 problem is: Name field is empty
+Line # 7 problem is: Name field is empty
+Line # 11 problem is: in field Month, check month information
+Line # 12 problem is: Month field is empty
+Line # 13 problem is: in field Name not correct format of data
+Line # 13 problem is: in field Name not correct format of data
+Line # 14 problem is: in field Month, check month information
+Line # 14 problem is: Name field is empty
+Line # 14 problem is: Name field is empty
+Line # 2 problem is: not correct fields
+Line # 3 problem is: in field Name not correct format of data
+Line # 3 problem is: in field Name not correct format of data
+Line # 6 problem is: check Name field data
+Line # 6 problem is: check Name field data
+Line # 7 problem is: in field Month, check month information
+Line # 8 problem is: Age field is empty
+Line # 8 problem is: check Name field data
+Line # 8 problem is: check Name field data
+Line # 9 problem is: in field Age not correct format of data
+Line # 9 problem is: check Name field data
+Line # 9 problem is: check Name field data
+Line # 10 problem is: in field Type not correct format of data
+Line # 10 problem is: check Name field data
+Line # 10 problem is: check Name field data
+Line # 2 problem is: Age field is empty
+Line # 3 problem is: in field Age not correct format of data
+Line # 3 problem is: in field Name not correct format of data
+Line # 3 problem is: in field Name not correct format of data
+Line # 7 problem is: check Name field data
+Line # 7 problem is: check Name field data
+Line # 1 problem is: in field Age not correct format of data
+Line # 1 problem is: check Name field data
+Line # 1 problem is: check Name field data
+Line # 2 problem is: in field Type not correct format of data
+Line # 4 problem is: in field Age not correct format of data
+Line # 5 problem is: Age field is empty
+Line # 6 problem is: in field Age, cannot convert to number
+Line # 6 problem is: in field Name not correct format of data
+Line # 6 problem is: in field Name not correct format of data
+Line # 7 problem is: Name field is empty
+Line # 7 problem is: Name field is empty
+Line # 11 problem is: in field Month, check month information
+Line # 12 problem is: Month field is empty
+Line # 13 problem is: in field Name not correct format of data
+Line # 13 problem is: in field Name not correct format of data
+Line # 14 problem is: in field Month, check month information
+Line # 14 problem is: Name field is empty
+Line # 14 problem is: Name field is empty
