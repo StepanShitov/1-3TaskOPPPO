@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	std::cout << "Get data from: " << argv[1] << "; Save data to: " << argv[2] << std::endl;
 	std::ifstream in;
 	strcat(TestsDir, argv[1]);
-	if(checkIfFileExists(in, TestsDir) == -1) return 0;	
+	if(checkIfFileExists(in, TestsDir, argv[2]) == -1) return 0;	
 
 	system("pause");
 	return 0;

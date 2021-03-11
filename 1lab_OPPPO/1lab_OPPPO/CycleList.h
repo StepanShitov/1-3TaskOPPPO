@@ -3,6 +3,7 @@
 
 #include "iostream"
 #include "Forest.h"
+#include "fstream"
 
 struct ForestElement
 {
@@ -38,20 +39,16 @@ public:
         delete last;
     }
 
-    //void addNewElement(Forest& forestObject);
-
-    Node *getFirst() { return first; }
-
 void addNewElement(Forest& forestObject)   
 {
-    if(forestObject.getType() == "tree")
-        std::cout << forestObject.getAge() /*<< " " << forestObject.getAge() << " " << fgetName() */<< std::endl;
+    /*if(forestObject.getType() == "tree")
+        std::cout << forestObject.getAge() /*<< " " << forestObject.getAge() << " " << fgetName() << std::endl;*/
     Node* newNode = new Node;
 	ForestElement* newElement = new ForestElement;
 	newElement->forestElement = forestObject;
     newNode->forestElement = *newElement;
-    if(forestObject.getType() == "tree")
-        std::cout << newNode->forestElement.forestElement.getAge();
+    /*if(forestObject.getType() == "tree")
+        std::cout << newNode->forestElement.forestElement.getAge();*/
      
     if(first)
     {
@@ -168,6 +165,25 @@ Node* find(std::string name)
       else
         return 0;
  
+   }
+
+   void printOut(char *OutDir)
+   {
+        std::ofstream dataOut(OutDir, std::ios_base::out | std::ios_base::trunc);
+
+        Node* node = last;
+        if(first)
+        do
+        {
+            if(node->forestElement.forestElement.getType() == "tree")
+                dataOut << "Type is: " << node->forestElement.forestElement.getType() << " age is: " << node->forestElement.forestElement.getAge() << 
+                    " name is: " << node->forestElement.forestElement.getName() << ";" << "\n";
+            else if(node->forestElement.forestElement.getType() == "bush")
+                dataOut << "Type is: " << node->forestElement.forestElement.getType() << " month is: " << node->forestElement.forestElement.getMonth() << 
+                    " name is: " << node->forestElement.forestElement.getName() << ";"<< "\n";
+        node = node->next;
+        } while(node != last);
+        dataOut.close();
    }
 
 };

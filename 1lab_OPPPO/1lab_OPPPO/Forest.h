@@ -11,7 +11,7 @@ public:
 		type_ = " ";
 		name_ = " ";
 	}
-	~Forest() { std::cout << "destruct";}
+	~Forest() { /*std::cout << "destruct";*/}
 
 	std::string getType() { return type_; }
 	std::string getName(){ return name_; }

@@ -6,9 +6,6 @@
 
 void prepareData(std::vector<std::string>& data, int currentLine, List& list)
 {    
-    /*for(int i = 0; i < data.size(); i++)
-        std::cout << data[i] << " ";
-    std::cout << std::endl;*/
     std::string type, ageOrMonth, name, delimiter = ": ", fieldData, validityResult;
     int ageOrMonthFlag /*0 - Age, 1 - Month*/, indexOfField, lineIsBad;
     std::vector<checkedData> checkedDataOut;
@@ -40,15 +37,10 @@ void prepareData(std::vector<std::string>& data, int currentLine, List& list)
         }
     }
     if(lineIsBad != currentLine)
-    {
-        /*for(int i = 0; i < checkedDataOut.size(); i++)
-            std::cout << checkedDataOut[i].index << " " << checkedDataOut[i].fieldData << " ";
-        std::cout << std::endl;*/
-        stringsToObjects(checkedDataOut, list);
-    }
+        validityResult = stringsToObjects(checkedDataOut, list);
+    if(validityResult != "OK")
+        problemsWithInputLine(currentLine, validityResult);
     std::vector<checkedData>().swap(checkedDataOut);
-    //if(lineIsBad != currentLine)
-        //stringsToObjects(&indexOfField, &fieldData);
 }
 
 std::string getField(std::string lineToFind, std::string data)
@@ -167,62 +159,67 @@ std::string checkName(std::string* data)
 
 std::string stringsToObjects(std::vector<checkedData>& data, List &list)
 {
-    std::string currentType;
-    Tree newTree;
-    Bush newBush;
-    for(int i = 0; i < data.size(); i++)
+    if((data[0].fieldData == "\"tree\"" && data[1].index == 1 && data[2].index == 3) || (data[0].fieldData == "\"bush\"" && data[1].index == 2 && data[2].index == 3))
     {
-        switch (data[i].index)
+        std::string currentType;
+        Tree newTree;
+        Bush newBush;
+        for(int i = 0; i < data.size(); i++)
         {
-            case 0:
+            switch (data[i].index)
             {
-                if(data[i].fieldData == "\"tree\"")
+                case 0:
                 {
-                    newTree.setType("tree");
-                    currentType = "tree";
+                    if(data[i].fieldData == "\"tree\"")
+                    {
+                        newTree.setType("tree");
+                        currentType = "tree";
+                    }
+                    else if(data[i].fieldData == "\"bush\"")
+                    {
+                        newBush.setType("bush");
+                        currentType = "bush";
+                    }
+                    break;
                 }
-                else if(data[i].fieldData == "\"bush\"")
+                case 1:
                 {
-                    newBush.setType("bush");
-                    currentType = "bush";
+                    newTree.setAge(toLong(&(data[i].fieldData)));
+                    break;
                 }
-                break;
-            }
-            case 1:
-            {
-                newTree.setAge(toLong(&(data[i].fieldData)));
-                break;
-            }
-            case 2:
-            {
-                setMonthValue(newBush, data[i].fieldData);
-                break;
-            }
-            case 3:
-            {
-                if(data[i].fieldData.find(" ") == std::string::npos)
-                    data[i].fieldData = deleteQuotes(data[i].fieldData);
-                if(currentType == "tree")
-                    newTree.setName(data[i].fieldData);
-                else if(currentType == "bush")
-                    newBush.setName(data[i].fieldData);
-                break;
+                case 2:
+                {
+                    setMonthValue(newBush, data[i].fieldData);
+                    break;
+                }
+                case 3:
+                {
+                    if(data[i].fieldData.find(" ") == std::string::npos)
+                        data[i].fieldData = deleteQuotes(data[i].fieldData);
+                    if(currentType == "tree")
+                        newTree.setName(data[i].fieldData);
+                    else if(currentType == "bush")
+                        newBush.setName(data[i].fieldData);
+                    break;
+                }
             }
         }
-    }
     
-    Forest* f;
-    if(currentType == "tree")
-    {
-        f = &newTree;
-    }
-    else if(currentType == "bush")
-    {
-        f = &newBush;
-    }
-    list.addNewElement(*f);
+    
+        Forest* f;
+        if(currentType == "tree")
+        {
+            f = &newTree;
+        }
+        else if(currentType == "bush")
+        {
+            f = &newBush;
+        }
+        list.addNewElement(*f);
 
-    return "OK";
+        return "OK";
+    }
+    return "not correct fields";
 }
 
 std::string getMonthValue(int* month)

@@ -1,1 +1,1 @@
-Type: "Tree"; Age: 5; Name: "treeName";
+Type: "tree"; Age: 5; Name: "TreeName";

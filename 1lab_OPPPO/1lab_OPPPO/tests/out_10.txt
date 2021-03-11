@@ -1,0 +1,3 @@
+Type is: tree age is: 0 name is: Ash;
+Type is: bush month is: 0 name is: Cherry;
+Type is: bush month is: 0 name is: Basil;
